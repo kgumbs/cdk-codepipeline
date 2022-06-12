@@ -30,6 +30,10 @@ export class CdkCodepipelineStack extends Stack {
       branch: 'master',
       runOrder: 1
     })
+    pipeline.addStage({
+      stageName: 'Source',
+      actions: [sourceAction]
+    })
 
     this.buildArtifact = new Artifact()
     const buidAction = new aws_codepipeline_actions.CodeBuildAction({
@@ -37,14 +41,6 @@ export class CdkCodepipelineStack extends Stack {
       input: this.sourceArtifact,
       outputs: [this.buildArtifact],
       project: this.createCodeBuildProject()
-    })
-
-    pipeline.addStage({
-      stageName: 'Source',
-      actions: [sourceAction],
-      placement: {
-
-      }
     })
 
     pipeline.addStage({
@@ -76,7 +72,7 @@ export class CdkCodepipelineStack extends Stack {
 
     pipeline.addStage({
       stageName: 'Scan',
-      actions:[scanAction]
+      actions: [scanAction]
     })
 
   }
@@ -101,11 +97,11 @@ export class CdkCodepipelineStack extends Stack {
   private buildSpecContent = {
     version: '0.2',
     phases: {
-      install: {
-        'runtime-versions': {
-          java: 'corretto8'
-        }
-      },
+      // install: {
+      //   'runtime-versions': {
+      //     java: 'corretto8'
+      //   }
+      // },
       pre_build: {
         commands: [
           'echo pre_build running....',

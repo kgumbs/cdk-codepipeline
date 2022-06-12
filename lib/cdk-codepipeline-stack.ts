@@ -75,7 +75,7 @@ export class CdkCodepipelineStack extends Stack {
     })
 
     pipeline.addStage({
-      stageName: 'ScanAction',
+      stageName: 'Scan',
       actions:[scanAction]
     })
 

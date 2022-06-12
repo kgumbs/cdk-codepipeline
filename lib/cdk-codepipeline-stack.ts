@@ -1,6 +1,6 @@
 import { aws_codepipeline, aws_codepipeline_actions, SecretValue, Stack, StackProps } from 'aws-cdk-lib';
 import { BuildSpec, Cache, LinuxBuildImage, LocalCacheMode, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
-import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
+import { Action, Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
 import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
 import { CodePipeline } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
@@ -72,6 +72,11 @@ export class CdkCodepipelineStack extends Stack {
           },
         }),
       }),
+    })
+
+    pipeline.addStage({
+      stageName: 'ScanAction',
+      actions:[scanAction]
     })
 
   }

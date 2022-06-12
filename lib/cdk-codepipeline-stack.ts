@@ -10,6 +10,7 @@ export class CdkCodepipelineStack extends Stack {
 
   sourceArtifact: Artifact
   buildArtifact: Artifact
+  scanArtifact: Artifact
 
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
@@ -40,12 +41,37 @@ export class CdkCodepipelineStack extends Stack {
 
     pipeline.addStage({
       stageName: 'Source',
-      actions: [sourceAction]
+      actions: [sourceAction],
+      placement: {
+
+      }
     })
 
     pipeline.addStage({
       stageName: 'Build',
       actions: [buidAction]
+    })
+
+    this.scanArtifact = new Artifact()
+    const scanAction = new aws_codepipeline_actions.CodeBuildAction({
+      actionName: 'ScanAction',
+      input: this.sourceArtifact,
+      outputs: [this.scanArtifact],
+      project: new PipelineProject(this, 'Project', {
+        buildSpec: BuildSpec.fromObject({
+          version: '0.2',
+          env: {
+            'exported-variables': [
+              'MY_VAR',
+            ],
+          },
+          phases: {
+            build: {
+              commands: ['export MY_VAR="some value"', 'echo doing qualitygate scans....'],
+            },
+          },
+        }),
+      }),
     })
 
   }

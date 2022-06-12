@@ -54,6 +54,7 @@ export class CdkCodepipelineStack extends Stack {
       actionName: 'ScanAction',
       input: this.sourceArtifact,
       outputs: [this.scanArtifact],
+      runOrder: 3,
       project: new PipelineProject(this, 'Project', {
         buildSpec: BuildSpec.fromObject({
           version: '0.2',
@@ -80,7 +81,8 @@ export class CdkCodepipelineStack extends Stack {
       stageName: 'ManualApproval',
       actions: [new ManualApprovalAction({
         actionName: 'QA Approval',
-        notifyEmails: ['kwesigumbs@hotmail.com']
+        notifyEmails: ['kwesigumbs@hotmail.com'],
+        runOrder: 4
       })]
     })
 

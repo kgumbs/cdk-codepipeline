@@ -1,6 +1,7 @@
 import { aws_codepipeline, aws_codepipeline_actions, SecretValue, Stack, StackProps } from 'aws-cdk-lib';
 import { BuildSpec, Cache, LinuxBuildImage, LocalCacheMode, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
 import { Action, Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
+import { ManualApprovalAction } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
 import { CodePipeline } from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
@@ -73,6 +74,14 @@ export class CdkCodepipelineStack extends Stack {
     pipeline.addStage({
       stageName: 'Scan',
       actions: [scanAction]
+    })
+
+    pipeline.addStage({
+      stageName: 'ManualApproval',
+      actions: [new ManualApprovalAction({
+        actionName: 'QA Approval',
+        notifyEmails: ['kwesigumbs@hotmail.com']
+      })]
     })
 
   }

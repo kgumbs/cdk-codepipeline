@@ -20,7 +20,7 @@ export class CdkCodepipelineStack extends Stack {
       }),
 
     })
-    //const stage = pipeline.addStage(new AppStage(this, 'dev'))
+    const stage = pipeline.addStage(new AppStage(this, 'dev'))
     // stage.addPre(new ManualApprovalStep('Approval'))
 
 

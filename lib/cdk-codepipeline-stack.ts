@@ -16,7 +16,7 @@ export class CdkCodepipelineStack extends Stack {
       pipelineName: 'demo-pipeline',
       synth: new ShellStep('Synth', {
         input: source,
-        commands: ['npm install', 'npm run build', 'npx cdk synth'],
+        commands: ['npm install', 'npm run build', 'npx cdk synth']
       }),
 
     })
